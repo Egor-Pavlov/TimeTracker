@@ -7,9 +7,9 @@
 контролировать.
 ## 1.1 Типы запросов
 * создать пользователя трекинга 
-`curl -X POST http://localhost:8080/addUser -H "content-type:application/json" -d '{"username":"tester", "email":"a@a.ru"}'`
-* изменить данные пользователя `curl -X POST http://localhost:8080/updateUser -H "content-type:application/json" -d '{"userID":1, "username":"tester123", "email":"a123@a.ru"}'`
-* Добавить задачу `curl -X POST http://localhost:8080/addTask -H "content-type:application/json" -d '{"theme":"bug", "description":"bherjhjksmvsv1234"}'`
+`curl -i -w -X POST http://localhost:8080/addUser -H "content-type:application/json" -d '{"username":"tester", "email":"a@a.ru"}'`
+* изменить данные пользователя `curl -i -w -X POST http://localhost:8080/updateUser -H "content-type:application/json" -d '{"userID":1, "username":"tester123", "email":"a123@a.ru"}'`
+* Добавить задачу `curl -i -w -X POST http://localhost:8080/addTask -H "content-type:application/json" -d '{"theme":"bug", "description":"bherjhjksmvsv1234"}'`
 * начать отсчет времени по задаче Х
 * прекратить отсчет времени по задаче Х
 * показать все трудозатраты пользователя Y за период N..M в виде связного списка Задача -
