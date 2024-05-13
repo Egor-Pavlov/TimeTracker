@@ -12,13 +12,13 @@ CREATE TABLE IF NOT EXISTS Task (
                                      description TEXT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS TimeEntry (
+CREATE TABLE IF NOT EXISTS Time_Entry (
                                          Id INT AUTO_INCREMENT PRIMARY KEY,
-                                         userId INT,
-                                         taskId INT,
+                                         user_Id INT,
+                                         task_Id INT,
                                          startTime DATETIME NOT NULL,
                                          endTime DATETIME,
                                          duration DECIMAL(10, 2), -- DECIMAL с пятью разрядами до запятой и двумя после
-                                         FOREIGN KEY (userId) REFERENCES User(user_Id),
-                                         FOREIGN KEY (taskId) REFERENCES Task(task_Id)
+                                         FOREIGN KEY (user_Id) REFERENCES User(user_Id),
+                                         FOREIGN KEY (task_Id) REFERENCES Task(task_Id)
 )

@@ -1,28 +1,31 @@
 package org.example.timetracker.Models;
 
-import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
-
+import java.sql.Timestamp;
 public class TimeEntry {
-   private long id;
-   private long user_id;
-   private long task_id;
-   private DateTimeLiteralExpression.DateTime startTime;
-   private DateTimeLiteralExpression.DateTime endTime;
-   private double duration;
+    private long id;
+    private long user_Id;
+    private long task_Id;
+    private Timestamp startTime;
+    private Timestamp endTime;
+    private double duration;
 
     public TimeEntry(long id,
-                     long user_id,
-                     long task_id,
-                     DateTimeLiteralExpression.DateTime startTime,
-                     DateTimeLiteralExpression.DateTime endTime,
+                     long user_Id,
+                     long task_Id,
+                     Timestamp startTime,
+                     Timestamp endTime,
                      double duration)
     {
         this.id = id;
-        this.user_id = user_id;
-        this.task_id = task_id;
+        this.user_Id = user_Id;
+        this.task_Id = task_Id;
         this.startTime = startTime;
         this.endTime = endTime;
         this.duration = duration;
+    }
+
+    public TimeEntry() {
+
     }
 
     public long getId() {
@@ -30,35 +33,36 @@ public class TimeEntry {
     }
 
     public long getUser_id() {
-        return user_id;
+        return user_Id;
     }
 
-    public void setUser_id(long user_id) {
-        this.user_id = user_id;
+    public void setUser_id(long user_Id) {
+        this.user_Id = user_Id;
     }
 
     public long getTask_id() {
-        return task_id;
+        return task_Id;
     }
 
-    public void setTask_id(long task_id) {
-        this.task_id = task_id;
+    public void setTask_id(long user_Id) {
+        this.user_Id = user_Id;
     }
 
-    public DateTimeLiteralExpression.DateTime getStartTime() {
+    public Timestamp getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(DateTimeLiteralExpression.DateTime startTime) {
+    public void setStartTime(Timestamp startTime) {
         this.startTime = startTime;
     }
 
-    public DateTimeLiteralExpression.DateTime getEndTime() {
+    public Timestamp getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(DateTimeLiteralExpression.DateTime endTime) {
+    public void setEndTime(Timestamp endTime) {
         this.endTime = endTime;
+        this.duration = this.endTime.getTime() - this.startTime.getTime();
     }
 
     public double getDuration() {

@@ -1,10 +1,14 @@
 package org.example.timetracker.Service;
 
+import org.example.timetracker.Models.TimeEntry;
 import org.example.timetracker.Repositories.TasksRepository;
 import org.example.timetracker.Repositories.TimeEntriesRepository;
 import org.example.timetracker.Repositories.UsersRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
+
+import java.sql.Timestamp;
 
 @Service
 public class TimeTrackerService {
@@ -18,11 +22,35 @@ public class TimeTrackerService {
     }
 
     @Transactional
-    public void startTracking(long userID, long taskID) {
+    public boolean startTracking(long userID, long taskID) {
         //Проверить, что пользователь существует
         //проверить что задача существует
-        //проверить что нет записи в таблице timeentry для этого пользователя и этой задачи, в которой нет endtime
-        //Создать запись, указать id пользователя и задачи, дату и время.
+        if (UsersRepository.existsById(userID) && TasksRepository.existsById(taskID)) {
+            //проверить что нет записи в таблице timeEntry для этого пользователя и этой задачи, в которой нет endtime
+            if(!timeEntriesRepository.existsByUserIdAndTaskId(userID, taskID)){
+                //Создать запись, указать id пользователя и задачи, дату и время.
+                timeEntriesRepository.save(userID, taskID, new Timestamp(System.currentTimeMillis()));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Transactional
+    public boolean stopTracking(long userID, long taskID) {
+        //Проверить, что пользователь существует
+        //проверить что задача существует
+        if (UsersRepository.existsById(userID) && TasksRepository.existsById(taskID)) {
+            //проверить что есть запись в таблице timeEntry для этого пользователя и этой задачи, в которой нет endtime
+            if(timeEntriesRepository.existsByUserIdAndTaskId(userID, taskID)){
+                //установить время окончания и вычислить продолжительность
+                TimeEntry timeEntry = timeEntriesRepository.findByUserIdAndTaskId(userID, taskID);
+                timeEntry.setEndTime(new Timestamp(System.currentTimeMillis()));
+                timeEntriesRepository.update(timeEntry.getId(), timeEntry.getEndTime(), timeEntry.getDuration());
+                return true;
+            }
+        }
+        return false;
     }
 
 }

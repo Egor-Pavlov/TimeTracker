@@ -1,13 +1,11 @@
 package org.example.timetracker.Controller;
 
 import org.example.timetracker.DTO.TaskRequest;
-import org.example.timetracker.DTO.TimeEntryDTO;
+import org.example.timetracker.DTO.TimeEntryRequest;
 import org.example.timetracker.DTO.UserRequest;
 import org.example.timetracker.Models.Task;
-import org.example.timetracker.Models.TimeEntry;
 import org.example.timetracker.Models.User;
 import org.example.timetracker.Repositories.TasksRepository;
-import org.example.timetracker.Repositories.TimeEntriesRepository;
 import org.example.timetracker.Repositories.UsersRepository;
 import org.example.timetracker.Service.TimeTrackerService;
 import org.springframework.http.HttpStatus;
@@ -66,12 +64,18 @@ public class TimeTrackerRestController {
     }
 
     @PostMapping("/startTracking")
-    public ResponseEntity<Void> startTracking(@RequestParam TimeEntryDTO timeEntry) {
-        try {
-            timeTrackerService.startTracking(timeEntry.getUser_id(), timeEntry.getTask_id());
-            return ResponseEntity.ok().build(); // Код 200 OK
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Код 500 Internal Server Error
+    public ResponseEntity<Void> startTracking(@RequestBody TimeEntryRequest timeEntry) {
+        if(timeTrackerService.startTracking(timeEntry.getUser_id(), timeEntry.getTask_id())){
+            return ResponseEntity.ok().build();
         }
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
+
+    @PostMapping("/stopTracking")
+    public ResponseEntity<Void> stopTracking(@RequestBody TimeEntryRequest timeEntry) {
+        if(timeTrackerService.stopTracking(timeEntry.getUser_id(), timeEntry.getTask_id())){
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 }
