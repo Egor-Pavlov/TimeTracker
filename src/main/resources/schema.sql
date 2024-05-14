@@ -16,9 +16,9 @@ CREATE TABLE IF NOT EXISTS Time_Entry (
                                          Id INT AUTO_INCREMENT PRIMARY KEY,
                                          user_Id INT,
                                          task_Id INT,
-                                         startTime DATETIME NOT NULL,
-                                         endTime DATETIME,
-                                         duration DECIMAL(10, 2), -- DECIMAL с пятью разрядами до запятой и двумя после
+                                         start_Time DATETIME NOT NULL,
+                                         end_Time DATETIME,
+                                         duration DOUBLE,
                                          FOREIGN KEY (user_Id) REFERENCES User(user_Id),
                                          FOREIGN KEY (task_Id) REFERENCES Task(task_Id)
 )

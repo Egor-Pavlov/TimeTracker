@@ -8,15 +8,21 @@
 ## 1.1 Типы запросов
 * создать пользователя трекинга 
 `curl -i -w -X POST http://localhost:8080/addUser -H "content-type:application/json" -d '{"username":"tester", "email":"a@a.ru"}'`
-* изменить данные пользователя `curl -i -w -X POST http://localhost:8080/updateUser -H "content-type:application/json" -d '{"userID":1, "username":"tester123", "email":"a123@a.ru"}'`
-* Добавить задачу `curl -i -w -X POST http://localhost:8080/addTask -H "content-type:application/json" -d '{"theme":"bug", "description":"bherjhjksmvsv1234"}'`
-* начать отсчет времени по задаче Х `curl -v -X POST http://localhost:8080/startTracking -H "content-type:application/json" -d '{"userId":1, "taskId":1}'`
-* прекратить отсчет времени по задаче Х `curl -v -X POST http://localhost:8080/stopTracking -H "content-type:application/json" -d '{"userId":1, "taskId":1}'`
+* изменить данные пользователя 
+`curl -i -w -X POST http://localhost:8080/updateUser -H "content-type:application/json" -d '{"userID":1, "username":"tester123", "email":"a123@a.ru"}'`
+* Добавить задачу 
+`curl -i -w -X POST http://localhost:8080/addTask -H "content-type:application/json" -d '{"theme":"bug", "description":"bherjhjksmvsv1234"}'`
+* начать отсчет времени по задаче Х 
+`curl -v -X POST http://localhost:8080/startTracking -H "content-type:application/json" -d '{"userId":1, "taskId":1}'`
+* прекратить отсчет времени по задаче Х 
+`curl -v -X POST http://localhost:8080/stopTracking -H "content-type:application/json" -d '{"userId":1, "taskId":1}'`
 * показать все трудозатраты пользователя Y за период N..M в виде связного списка Задача - Сумма затраченного времени в виде (чч:мм), сортировка по времени поступления в трекер (для ответа на вопрос, На какие задачи я потратил больше времени)
 * показать все временные интервалы занятые работой за период N..M в виде связного списка Временной интервал (число чч:мм) - Задача (для ответа на вопросы, На что ушла моя неделя или Где за прошедшую неделю были ‘дыры’, когда я ничего не делал)
 * показать сумму трудозатрат по всем задачам пользователя Y за период N..M
 * удалить всю информацию о пользователе Z
 * очистить данные трекинга пользователя Z
+'curl -v -X DELETE http://localhost:8080/deleteUserTime -H "content-type:application/json" -d '{"userId":1}''
+
 ## 1.2 Дополнительные условия
 Если пользователь не завершил отсчет своего времени, то он должен завершаться
 автоматически в 23:59 текущего дня.

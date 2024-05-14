@@ -3,22 +3,22 @@ package org.example.timetracker.Models;
 import java.sql.Timestamp;
 public class TimeEntry {
     private long id;
-    private long user_Id;
-    private long task_Id;
+    private long userId;
+    private long taskId;
     private Timestamp startTime;
     private Timestamp endTime;
     private double duration;
 
     public TimeEntry(long id,
-                     long user_Id,
-                     long task_Id,
+                     long userId,
+                     long taskId,
                      Timestamp startTime,
                      Timestamp endTime,
                      double duration)
     {
         this.id = id;
-        this.user_Id = user_Id;
-        this.task_Id = task_Id;
+        this.userId = userId;
+        this.taskId = taskId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.duration = duration;
@@ -32,20 +32,20 @@ public class TimeEntry {
         return id;
     }
 
-    public long getUser_id() {
-        return user_Id;
+    public long getuserId() {
+        return userId;
     }
 
-    public void setUser_id(long user_Id) {
-        this.user_Id = user_Id;
+    public void setuserId(long userId) {
+        this.userId = userId;
     }
 
-    public long getTask_id() {
-        return task_Id;
+    public long gettaskId() {
+        return taskId;
     }
 
-    public void setTask_id(long user_Id) {
-        this.user_Id = user_Id;
+    public void settaskId(long userId) {
+        this.userId = userId;
     }
 
     public Timestamp getStartTime() {
@@ -62,7 +62,9 @@ public class TimeEntry {
 
     public void setEndTime(Timestamp endTime) {
         this.endTime = endTime;
-        this.duration = this.endTime.getTime() - this.startTime.getTime();
+        this.endTime.setNanos(0);
+        this.duration =  (double)(this.endTime.getTime() - this.startTime.getTime())/ (1000 * 60 * 60);
+        this.duration = Math.round(this.duration * 100.0) / 100.0;
     }
 
     public double getDuration() {

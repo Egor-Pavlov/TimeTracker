@@ -4,11 +4,13 @@ import org.example.timetracker.Models.TimeEntry;
 import org.example.timetracker.Repositories.TasksRepository;
 import org.example.timetracker.Repositories.TimeEntriesRepository;
 import org.example.timetracker.Repositories.UsersRepository;
+import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Service
 public class TimeTrackerService {
@@ -19,6 +21,18 @@ public class TimeTrackerService {
         this.UsersRepository = UsersRepository;
         this.TasksRepository = TasksRepository;
         this.timeEntriesRepository = timeEntriesRepository;
+    }
+
+    public List<TimeEntry> findAll() {
+        return timeEntriesRepository.findAll();
+    }
+    public int countByUserId(long userId){
+        return timeEntriesRepository.countByUserId(userId);
+    }
+
+    @Transactional
+    public int deleteByUserId(long userId){
+        return timeEntriesRepository.deleteByUserId(userId);
     }
 
     @Transactional
@@ -46,7 +60,7 @@ public class TimeTrackerService {
                 //установить время окончания и вычислить продолжительность
                 TimeEntry timeEntry = timeEntriesRepository.findByUserIdAndTaskId(userID, taskID);
                 timeEntry.setEndTime(new Timestamp(System.currentTimeMillis()));
-                timeEntriesRepository.update(timeEntry.getId(), timeEntry.getEndTime(), timeEntry.getDuration());
+                timeEntriesRepository.update(timeEntry.getEndTime(), timeEntry.getDuration(), timeEntry.getId());
                 return true;
             }
         }
