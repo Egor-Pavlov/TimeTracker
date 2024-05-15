@@ -10,6 +10,12 @@ import java.util.List;
 
 @Repository
 public interface UsersRepository extends CrudRepository<User, Long> {
+    @Query("SELECT COUNT(*) FROM user WHERE email = :email")
+    public boolean existsByEmail(String email);
+
+    @Query("SELECT user_Id FROM user WHERE email = :email")
+    public Long findByEmail(String email);
+
     @Modifying
     @Query("INSERT INTO user (username, email) VALUES (:name, :email);")
     public void save(String name, String email);

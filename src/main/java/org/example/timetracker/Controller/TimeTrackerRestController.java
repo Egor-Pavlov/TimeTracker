@@ -29,13 +29,19 @@ public class TimeTrackerRestController {
     }
 
     @PostMapping("/addUser")
-    public ResponseEntity<Void> addUser(@RequestBody UserRequest newUser) {
+    public ResponseEntity addUser(@RequestBody UserRequest newUser) {
+        if (userRepository.existsByEmail(newUser.getEmail())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email is used!"); // Код 200 OK
+        }
         userRepository.save(newUser.getUsername(), newUser.getEmail());
         return ResponseEntity.ok().build(); // Код 200 OK
 
     }
     @PostMapping("/updateUser")
-    public ResponseEntity<Void> updateUser(@RequestBody User newUser) {
+    public ResponseEntity updateUser(@RequestBody User newUser) {
+        if (userRepository.findByEmail(newUser.getUserEmailAddress()) != newUser.getUserID()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email is used!");
+        }
         userRepository.updateUserByUserID(newUser.getUserID(), newUser.getUserName(), newUser.getUserEmailAddress());
         return ResponseEntity.ok().build(); // Код 200 OK
     }
@@ -48,7 +54,7 @@ public class TimeTrackerRestController {
     @PostMapping("/addTask")
     public ResponseEntity<Void> addTask(@RequestBody TaskRequest taskRequest){
         tasksRepository.save(taskRequest.getTaskTheme(), taskRequest.getTaskDescription());
-        return ResponseEntity.ok().build(); // Код 200 OK
+        return ResponseEntity.ok().build();
 
     }
     @GetMapping("/tasks")
