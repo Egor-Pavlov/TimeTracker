@@ -35,4 +35,13 @@ public interface TimeEntriesRepository extends CrudRepository <TimeEntry, Long> 
     @Modifying
     @Query("DELETE FROM time_entry where user_Id = :user_Id")
     public int deleteByUserId(Long user_Id);
+
+    @Query("""
+            SELECT SUM(duration) AS total_duration
+            FROM time_entry
+            WHERE user_Id = :id
+            AND start_time >= :start_date
+            AND end_time <= :end_date
+            """)
+    public double getTotalDurationForPeriod(Long id, Timestamp start_date, Timestamp end_date);
 }

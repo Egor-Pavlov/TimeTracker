@@ -67,4 +67,8 @@ public class TimeTrackerService {
         return false;
     }
 
+    public double getTotalDurationForPeriod(long userID, Timestamp startTime, Timestamp endTime){
+        return timeEntriesRepository.getTotalDurationForPeriod(userID, startTime, endTime);
+    }
+
 }
