@@ -1,11 +1,15 @@
 package org.example.timetracker.Models;
 
+import java.sql.Timestamp;
+
 public class Task {
     private final long taskID;
     private String theme;
     private String description;
+    private Timestamp creationDate;
 
-    public Task(long taskID, String theme, String description) {
+    public Task(long taskID, String theme, String description, Timestamp creationDate) {
+        this.creationDate = creationDate;
         if (taskID < 0)
             throw new IllegalArgumentException("Task ID cannot be negative");
 
@@ -33,4 +37,11 @@ public class Task {
         this.description = taskDescription;
     }
 
+    public Timestamp getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Timestamp creationDate) {
+        this.creationDate = creationDate;
+    }
 }

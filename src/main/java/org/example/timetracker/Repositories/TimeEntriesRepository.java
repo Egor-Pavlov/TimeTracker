@@ -1,6 +1,6 @@
 package org.example.timetracker.Repositories;
 
-import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
+import org.example.timetracker.DTO.TaskDuration;
 import org.example.timetracker.Models.TimeEntry;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
@@ -44,4 +44,14 @@ public interface TimeEntriesRepository extends CrudRepository <TimeEntry, Long> 
             AND end_time <= :end_date
             """)
     public double getTotalDurationForPeriod(Long id, Timestamp start_date, Timestamp end_date);
+
+    @Query("""
+    SELECT t.task_Id, SUM(te.duration) AS total_Dur 
+    FROM time_entry te JOIN task t ON te.task_Id = t.task_Id 
+    WHERE te.user_Id = :id AND te.start_Time >= :start_date
+    AND te.start_Time <= :end_date 
+    GROUP BY t.task_Id 
+    ORDER BY t.creation_date DESC;
+        """)
+    public List<TaskDuration> getUserDurationsForPeriod(Long id, Timestamp start_date, Timestamp end_date );
 }

@@ -7,6 +7,7 @@ import org.example.timetracker.Models.User;
 import org.example.timetracker.Repositories.TasksRepository;
 import org.example.timetracker.Repositories.UsersRepository;
 import org.example.timetracker.Service.TimeTrackerService;
+import org.springframework.data.util.Pair;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -109,33 +110,43 @@ public class TimeTrackerRestController {
         return ResponseEntity.ok().build();
     }
 
-//Получение трудозатрат пользователя
-//@GetMapping("/api/user/tracking/sum/period")
-//public double getEffortForPeriod(
-//        @RequestParam(value = "userID") Long userID,
-//        @RequestParam(value = "startTime") @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") DateTimeFormat startTime,
-//        @RequestParam(value = "endTime") @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") DateTimeFormat endTime) {
-//    if (!userRepository.existsById(userID)) {
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-//                .body("User with id \"" + userID + "\" not found").getStatusCodeValue();
-//    }
-//    //return timeTrackerService.getTotalDurationForPeriod(userID, startTime, endTime);
-//}
-
     @GetMapping("/api/user/tracking/sum/period")
-    public double getUserTrackingForPeriod(
+    public ResponseEntity<?> getSumUserDurationForPeriod(
             @RequestParam("userID") Long userID,
             @RequestParam("startTime") String startTime,
-            @RequestParam("endTime") String endTime) throws ParseException {
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Timestamp startTimestamp = new Timestamp(dateFormat.parse(startTime).getTime());
-        Timestamp endTimestamp = new Timestamp(dateFormat.parse(endTime).getTime());
+            @RequestParam("endTime") String endTime) {
 
         if (!userRepository.existsById(userID)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("User with id \"" + userID + "\" not found").getStatusCodeValue();
+                    .body("User with id \"" + userID + "\" not found");
         }
-        return timeTrackerService.getTotalDurationForPeriod(userID, startTimestamp, endTimestamp);
+        try{
+            double totalDuration = timeTrackerService.getTotalDurationForPeriod(userID, startTime, endTime);
+            return ResponseEntity.ok().body(totalDuration);
+        }
+        catch (ParseException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Incorrect date!");
+        }
     }
+
+    @GetMapping("/api/user/tracking/durations/period")
+    public ResponseEntity<?> getUserDurationsForPeriod(
+            @RequestParam("userID") Long userID,
+            @RequestParam("startTime") String startTime,
+            @RequestParam("endTime") String endTime) {
+
+        if (!userRepository.existsById(userID)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("User with id \"" + userID + "\" not found");
+        }
+
+        try {
+            List<TaskDuration> durations = timeTrackerService.getUserDurationsForPeriod(userID, startTime, endTime);
+            return ResponseEntity.ok(durations);
+        } catch (ParseException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Incorrect date!");
+        }
+    }
+
 }

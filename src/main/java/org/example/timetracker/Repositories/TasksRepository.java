@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface TasksRepository extends CrudRepository <Task, Long>{
+    @Query("SELECT * FROM task;")
     public List<Task> findAll();
 
     @Modifying

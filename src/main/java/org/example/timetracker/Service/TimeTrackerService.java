@@ -1,15 +1,18 @@
 package org.example.timetracker.Service;
 
+import org.example.timetracker.DTO.TaskDuration;
 import org.example.timetracker.Models.TimeEntry;
 import org.example.timetracker.Repositories.TasksRepository;
 import org.example.timetracker.Repositories.TimeEntriesRepository;
 import org.example.timetracker.Repositories.UsersRepository;
-import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,6 +26,10 @@ public class TimeTrackerService {
         this.timeEntriesRepository = timeEntriesRepository;
     }
 
+    public Timestamp convertDate(String date) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        return new Timestamp(dateFormat.parse(date).getTime());
+    }
     public List<TimeEntry> findAll() {
         return timeEntriesRepository.findAll();
     }
@@ -67,8 +74,22 @@ public class TimeTrackerService {
         return false;
     }
 
-    public double getTotalDurationForPeriod(long userID, Timestamp startTime, Timestamp endTime){
-        return timeEntriesRepository.getTotalDurationForPeriod(userID, startTime, endTime);
+    public double getTotalDurationForPeriod(long userID, String startTime, String endTime) throws ParseException {
+        return timeEntriesRepository.getTotalDurationForPeriod(userID, convertDate(startTime), convertDate(endTime));
     }
+
+    public List<TaskDuration> getUserDurationsForPeriod(long userID, String startTime, String endTime) throws ParseException {
+        return timeEntriesRepository.getUserDurationsForPeriod(userID, convertDate(startTime), convertDate(endTime));
+        //        List<TaskDuration> requestResult = timeEntriesRepository.getUserDurationsForPeriod(userID, convertDate(startTime), convertDate(endTime));
+//
+//        List<Pair<Long, Double>> durations = new ArrayList<>();
+//
+//        for (TaskDuration projection : requestResult) {
+//            durations.add(Pair.of(projection.getTaskId(), projection.getTotalDuration()));
+//        }
+//        return durations;
+    }
+
+
 
 }
