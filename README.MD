@@ -17,11 +17,11 @@
 * прекратить отсчет времени по задаче Х 
 `curl -v -X POST http://localhost:8080/api/user/tracking/stop -H "content-type:application/json" -d '{"userId":1, "taskId":1}'`
 * показать все трудозатраты пользователя Y за период N..M в виде связного списка Задача - Сумма затраченного времени в виде (чч:мм), сортировка по времени поступления в трекер (для ответа на вопрос, На какие задачи я потратил больше времени)
-`http://localhost:8080/api/user/tracking/durations/period?userID=1&startTime=2024-05-13T00:00:00&endTime=2024-05-17T23:59:59`
+`curl -X GET "http://localhost:8080/api/user/tracking/durations/period?userID=1&startTime=2024-05-13T00:00:00&endTime=2024-05-17T23:59:59"`
 * показать все временные интервалы занятые работой за период N..M в виде связного списка Временной интервал (число чч:мм) - Задача (для ответа на вопросы, На что ушла моя неделя или Где за прошедшую неделю были ‘дыры’, когда я ничего не делал)
-
+` curl -X GET "http://localhost:8080/api/user/tracking/intervals/period?userID=2&startTime=2024-05-10T00:00:00&endTime=2024-05-18T23:59:59"`
 * показать сумму трудозатрат по всем задачам пользователя Y за период N..M
-`http://localhost:8080/api/user/tracking/sum/period?userID=2&startTime=2024-05-15T00:00:00&endTime=2024-05-16T23:59:59`
+` curl -X GET "http://localhost:8080/api/user/tracking/sum/period?userID=2&startTime=2024-05-10T00:00:00&endTime=2024-05-18T23:59:59"`
 * удалить всю информацию о пользователе Z
 `curl -v -X DELETE http://localhost:8080/api/user/delete -H "content-type:application/json" -d '{"userId":1}'`
 * очистить данные трекинга пользователя Z

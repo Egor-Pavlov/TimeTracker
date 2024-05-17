@@ -1,6 +1,7 @@
 package org.example.timetracker.Service;
 
 import org.example.timetracker.DTO.TaskDuration;
+import org.example.timetracker.DTO.WorkInterval;
 import org.example.timetracker.Models.TimeEntry;
 import org.example.timetracker.Repositories.TasksRepository;
 import org.example.timetracker.Repositories.TimeEntriesRepository;
@@ -80,16 +81,11 @@ public class TimeTrackerService {
 
     public List<TaskDuration> getUserDurationsForPeriod(long userID, String startTime, String endTime) throws ParseException {
         return timeEntriesRepository.getUserDurationsForPeriod(userID, convertDate(startTime), convertDate(endTime));
-        //        List<TaskDuration> requestResult = timeEntriesRepository.getUserDurationsForPeriod(userID, convertDate(startTime), convertDate(endTime));
-//
-//        List<Pair<Long, Double>> durations = new ArrayList<>();
-//
-//        for (TaskDuration projection : requestResult) {
-//            durations.add(Pair.of(projection.getTaskId(), projection.getTotalDuration()));
-//        }
-//        return durations;
     }
 
+    public List<WorkInterval> getUserWorkIntervalsForPeriod(long userID, String startTime, String endTime) throws ParseException {
+        return timeEntriesRepository.getUserWorkIntervalsForPeriod(userID, convertDate(startTime), convertDate(endTime));
+    }
 
 
 }

@@ -1,6 +1,7 @@
 package org.example.timetracker.Repositories;
 
 import org.example.timetracker.DTO.TaskDuration;
+import org.example.timetracker.DTO.WorkInterval;
 import org.example.timetracker.Models.TimeEntry;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
@@ -54,4 +55,12 @@ public interface TimeEntriesRepository extends CrudRepository <TimeEntry, Long> 
     ORDER BY t.creation_date DESC;
         """)
     public List<TaskDuration> getUserDurationsForPeriod(Long id, Timestamp start_date, Timestamp end_date );
+
+    @Query("""
+        SELECT t.task_Id, t.theme, t.description, te.start_Time, te.end_Time 
+        FROM time_entry te JOIN task t ON te.task_Id = t.task_Id \
+        WHERE te.user_Id = 1 AND start_Time >= :start_date AND  end_Time <= :end_date 
+        ORDER BY start_Time DESC;
+    """)
+    public List<WorkInterval> getUserWorkIntervalsForPeriod(Long id, Timestamp start_date, Timestamp end_date);
 }

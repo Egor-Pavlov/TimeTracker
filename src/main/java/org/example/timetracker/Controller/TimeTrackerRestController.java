@@ -149,4 +149,23 @@ public class TimeTrackerRestController {
         }
     }
 
+    @GetMapping("/api/user/tracking/intervals/period")
+    public ResponseEntity<?> getUserWorkIntervalsForPeriod(
+            @RequestParam("userID") Long userID,
+            @RequestParam("startTime") String startTime,
+            @RequestParam("endTime") String endTime) {
+
+        if (!userRepository.existsById(userID)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("User with id \"" + userID + "\" not found");
+        }
+
+        try {
+            List<WorkInterval> durations = timeTrackerService.getUserWorkIntervalsForPeriod(userID, startTime, endTime);
+            return ResponseEntity.ok(durations);
+        } catch (ParseException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Incorrect date!");
+        }
+    }
 }
