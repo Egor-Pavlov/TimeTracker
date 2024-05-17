@@ -17,12 +17,12 @@ public interface TimeEntriesRepository extends CrudRepository <TimeEntry, Long> 
 
     public int countByUserId(Long userId);
 
-    @Query("SELECT * FROM time_entry WHERE user_Id = :userId AND task_Id = :taskId;")
+    @Query("SELECT * FROM time_entry WHERE user_Id = :userId AND task_Id = :taskId AND end_time is NULL")
     public TimeEntry findByUserIdAndTaskId(Long userId, Long taskId);
 
     @Query("SELECT COUNT(*) FROM time_entry WHERE user_Id = :userId\n" +
             "AND task_Id = :taskId AND end_Time IS NULL;")
-    public boolean existsByUserIdAndTaskId(Long userId, Long taskId);
+    public int existsByUserIdAndTaskId(Long userId, Long taskId);
 
     @Modifying
     @Query("INSERT INTO time_entry (user_Id, task_Id, start_Time)\n" +

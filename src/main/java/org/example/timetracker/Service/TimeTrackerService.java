@@ -49,7 +49,7 @@ public class TimeTrackerService {
         //проверить что задача существует
         if (UsersRepository.existsById(userID) && TasksRepository.existsById(taskID)) {
             //проверить что нет записи в таблице timeEntry для этого пользователя и этой задачи, в которой нет endtime
-            if(!timeEntriesRepository.existsByUserIdAndTaskId(userID, taskID)){
+            if(timeEntriesRepository.existsByUserIdAndTaskId(userID, taskID) == 0){
                 //Создать запись, указать id пользователя и задачи, дату и время.
                 timeEntriesRepository.save(userID, taskID, new Timestamp(System.currentTimeMillis()));
                 return true;
@@ -64,7 +64,7 @@ public class TimeTrackerService {
         //проверить что задача существует
         if (UsersRepository.existsById(userID) && TasksRepository.existsById(taskID)) {
             //проверить что есть запись в таблице timeEntry для этого пользователя и этой задачи, в которой нет endtime
-            if(timeEntriesRepository.existsByUserIdAndTaskId(userID, taskID)){
+            if(timeEntriesRepository.existsByUserIdAndTaskId(userID, taskID) > 0){
                 //установить время окончания и вычислить продолжительность
                 TimeEntry timeEntry = timeEntriesRepository.findByUserIdAndTaskId(userID, taskID);
                 timeEntry.setEndTime(new Timestamp(System.currentTimeMillis()));
