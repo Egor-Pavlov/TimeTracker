@@ -1,6 +1,7 @@
 package org.example.timetracker.Repositories;
 
 import org.example.timetracker.Models.User;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -10,6 +11,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
+@EnableAspectJAutoProxy
 public interface UsersRepository extends CrudRepository<User, Long> {
 
     public List<User> findAll();

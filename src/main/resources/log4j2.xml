@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="maxSize" value="5MB"/>
+        <Property name="maxCount" value="7"/>
+        <Property name="logDir" value="C:\Users\Егор\source\repos\JAVA\TimeTracker\logs"/>
+        <Property name="defaultPattern" value="%d{ISO8601} [%t] %-5p %logger{1} %C{1}.%M(line:%L). %m%n"/>
+        <Property name="filenamePrefix" value="time-tracker"/>
+    </Properties>
+
+    <Appenders>
+        <RollingFile name="SPRING-INFO"
+                     fileName="${logDir}/${filenamePrefix}-spring.log"
+                     filePattern="${logDir}/%d{yyyyMMdd}.%i.log">
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout>
+                <pattern>${defaultPattern}</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxSize}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxCount}"/>
+        </RollingFile>
+
+        <RollingFile name="SERVICE"
+                     fileName="${logDir}/${filenamePrefix}.log"
+                     filePattern="${logDir}/%d{yyyyMMdd}.%i.log">
+            <PatternLayout>
+                <pattern>${defaultPattern}</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxSize}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxCount}"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+        </Root>
+
+        <Logger name="org.springframework" level="info">
+            <AppenderRef ref="SPRING-INFO"/>
+        </Logger>
+        <Logger name="org.example.timetracker" level="INFO">
+            <AppenderRef ref="SERVICE"/>
+        </Logger>
+        <Logger name="org.example.timetracker.Logging.RepositoryLoggingAspect" level="DEBUG">
+            <AppenderRef ref="SERVICE"/>
+        </Logger>
+    </Loggers>
+</Configuration>

@@ -1,6 +1,6 @@
 package org.example.timetracker.DTO;
 
-public class UserIdReauest {
+public class UserIdRequest {
     private Long userId;
 
     public Long getUserId() {

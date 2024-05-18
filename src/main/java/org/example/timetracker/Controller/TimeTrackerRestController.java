@@ -7,18 +7,16 @@ import org.example.timetracker.Models.User;
 import org.example.timetracker.Repositories.TasksRepository;
 import org.example.timetracker.Repositories.UsersRepository;
 import org.example.timetracker.Service.TimeTrackerService;
-import org.springframework.data.util.Pair;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 @RestController
+@EnableAspectJAutoProxy
 public class TimeTrackerRestController {
     private final UsersRepository userRepository;
     private final TasksRepository tasksRepository;
@@ -90,7 +88,7 @@ public class TimeTrackerRestController {
     }
 
     @DeleteMapping("/api/user/tracking/delete")
-    public ResponseEntity<String> deleteUserTime(@RequestBody UserIdReauest userId) {
+    public ResponseEntity<String> deleteUserTime(@RequestBody UserIdRequest userId) {
         if (timeTrackerService.countByUserId(userId.getUserId()) == 0) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tasks for user " + userId.getUserId() + " not found");
         }
@@ -98,7 +96,7 @@ public class TimeTrackerRestController {
                 .body("Deleted " + timeTrackerService.deleteByUserId(userId.getUserId()) + " rows");
     }
     @DeleteMapping("/api/user/delete")
-    public ResponseEntity<String> deleteUser(@RequestBody UserIdReauest userId) {
+    public ResponseEntity<String> deleteUser(@RequestBody UserIdRequest userId) {
         if (!userRepository.existsById(userId.getUserId())) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("User with id \"" + userId.getUserId() + "\" not found");
@@ -139,7 +137,6 @@ public class TimeTrackerRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("User with id \"" + userID + "\" not found");
         }
-
         try {
             List<TaskDuration> durations = timeTrackerService.getUserDurationsForPeriod(userID, startTime, endTime);
             return ResponseEntity.ok(durations);
@@ -159,7 +156,6 @@ public class TimeTrackerRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("User with id \"" + userID + "\" not found");
         }
-
         try {
             List<WorkInterval> durations = timeTrackerService.getUserWorkIntervalsForPeriod(userID, startTime, endTime);
             return ResponseEntity.ok(durations);

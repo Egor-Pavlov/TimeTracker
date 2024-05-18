@@ -6,6 +6,7 @@ import org.example.timetracker.Models.TimeEntry;
 import org.example.timetracker.Repositories.TasksRepository;
 import org.example.timetracker.Repositories.TimeEntriesRepository;
 import org.example.timetracker.Repositories.UsersRepository;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@EnableAspectJAutoProxy
 public class TimeTrackerService {
     private final UsersRepository UsersRepository;
     private final TasksRepository TasksRepository;
