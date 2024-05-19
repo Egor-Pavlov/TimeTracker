@@ -74,4 +74,16 @@ public class TimeEntry {
     public void setDuration(double duration) {
         this.duration = duration;
     }
+
+    @Override
+    public String toString() {
+        return "TimeEntry{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", taskId=" + taskId +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", duration=" + duration +
+                '}';
+    }
 }

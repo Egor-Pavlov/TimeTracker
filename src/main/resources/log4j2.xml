@@ -38,13 +38,16 @@
         <Root level="info">
         </Root>
 
-        <Logger name="org.springframework" level="info">
+        <Logger name="org.springframework" level="INFO">
             <AppenderRef ref="SPRING-INFO"/>
         </Logger>
-        <Logger name="org.example.timetracker" level="INFO">
+        <Logger name="RestController" level="DEBUG">
             <AppenderRef ref="SERVICE"/>
         </Logger>
-        <Logger name="org.example.timetracker.Logging.RepositoryLoggingAspect" level="DEBUG">
+        <Logger name="TimeTrackerService" level="DEBUG">
+            <AppenderRef ref="SERVICE"/>
+        </Logger>
+        <Logger name="Database" level="DEBUG">
             <AppenderRef ref="SERVICE"/>
         </Logger>
     </Loggers>

@@ -24,10 +24,9 @@ public class LoggingAspect {
     В аннотациях @Before, @AfterReturning и @AfterThrowing объединены два Pointcut-а
     serviceMethods() и controllerMethods() с помощью оператора ||.
 
-Этот подход сокращает количество методов в классе и упрощает код, сохраняя при этом всю функциональность логирования.
  */
-    private static final Logger serviceLogger = LogManager.getLogger(TimeTrackerService.class);
-    private static final Logger controllerLogger = LogManager.getLogger(TimeTrackerRestController.class);
+    private static final Logger serviceLogger = LogManager.getLogger("TimeTrackerService");
+    private static final Logger controllerLogger = LogManager.getLogger("RestController");
 
     @Pointcut("execution(* org.example.timetracker.Service..*(..))")
     public void serviceMethods() {
@@ -48,7 +47,7 @@ public class LoggingAspect {
     @AfterReturning(pointcut = "serviceMethods() || controllerMethods()", returning = "result")
     public void logAfterReturning(JoinPoint joinPoint, Object result) {
         Logger logger = getLogger(joinPoint);
-        logger.debug("Method " + joinPoint.getSignature().getName() + " executed successfully. Returned: " + result);
+        logger.debug("Method " + joinPoint.getSignature().getName() + " executed successfully. Returned: " + ObjectToString.objectToString(result));
     }
 
     @AfterThrowing(pointcut = "serviceMethods() || controllerMethods()", throwing = "error")
@@ -59,7 +58,7 @@ public class LoggingAspect {
 
     private Logger getLogger(JoinPoint joinPoint) {
         String className = joinPoint.getTarget().getClass().getName();
-        if (className.startsWith("org.example.timetracker.Repositories")) {
+        if (className.startsWith("org.example.timetracker.Service")) {
             return serviceLogger;
         } else if (className.startsWith("org.example.timetracker.Controller")) {
             return controllerLogger;

@@ -52,4 +52,15 @@ public class WorkInterval {
     public void setEndTime(Timestamp endTime) {
         this.endTime = endTime;
     }
+
+    @Override
+    public String toString() {
+        return "WorkInterval{" +
+                "taskID=" + taskID +
+                ", theme='" + theme + '\'' +
+                ", description='" + description + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                '}';
+    }
 }

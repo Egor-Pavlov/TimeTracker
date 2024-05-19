@@ -16,4 +16,12 @@ public class TaskDuration {
     public void setTotalDuration(Double total_DUR) {
         this.total_DUR = total_DUR;
     }
+
+    @Override
+    public String toString() {
+        return "TaskDuration{" +
+                "task_ID=" + task_ID +
+                ", total_DUR=" + total_DUR +
+                '}';
+    }
 }

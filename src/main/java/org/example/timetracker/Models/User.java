@@ -37,4 +37,13 @@ public class User {
             throw new IllegalArgumentException("userEmailAddress cannot be null or empty");
         this.email = userEmailAddress;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userID=" + userID +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }
