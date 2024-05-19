@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 
 public class ObjectToString {
     public static String objectToString(Object result) {
+        if (result == null) {
+            return "null";
+        }
         // Проверяем, является ли результат коллекцией (например, List, Set)
         if (result instanceof Collection) {
             // Преобразуем каждый элемент коллекции в строку и объединяем их в строку с помощью Collectors.joining

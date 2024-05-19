@@ -4,8 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.example.timetracker.Controller.TimeTrackerRestController;
-import org.example.timetracker.Service.TimeTrackerService;
+
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;

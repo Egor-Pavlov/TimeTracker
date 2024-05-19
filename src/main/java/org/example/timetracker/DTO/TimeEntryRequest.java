@@ -24,4 +24,12 @@ public class TimeEntryRequest {
     public void setTask_id(long task_id) {
         this.taskId = task_id;
     }
+
+    @Override
+    public String toString() {
+        return "TimeEntryRequest{" +
+                "userId=" + userId +
+                ", taskId=" + taskId +
+                '}';
+    }
 }

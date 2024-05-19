@@ -50,5 +50,8 @@
         <Logger name="Database" level="DEBUG">
             <AppenderRef ref="SERVICE"/>
         </Logger>
+        <Logger name="Scheduler" level="INFO">
+            <AppenderRef ref="SERVICE"/>
+        </Logger>
     </Loggers>
 </Configuration>

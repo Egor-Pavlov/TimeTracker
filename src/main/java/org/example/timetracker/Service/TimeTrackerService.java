@@ -76,6 +76,15 @@ public class TimeTrackerService {
         }
         return false;
     }
+    @Transactional
+    public boolean stopTrackingAll(){
+        return timeEntriesRepository.stopAll();
+    }
+
+    @Transactional
+    public int cleanUpOldData(int days){
+        return timeEntriesRepository.cleanUpOldData(days);
+    }
 
     public double getTotalDurationForPeriod(long userID, String startTime, String endTime) throws ParseException {
         return timeEntriesRepository.getTotalDurationForPeriod(userID, convertDate(startTime), convertDate(endTime));

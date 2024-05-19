@@ -8,6 +8,7 @@ import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -19,6 +20,20 @@ public interface TimeEntriesRepository extends CrudRepository <TimeEntry, Long> 
 
     public int countByUserId(Long userId);
 
+    @Modifying
+    @Query("""
+        UPDATE time_entry
+        SET end_Time = NOW(),  -- Устанавливаем текущее время в end_Time
+            duration = ROUND(TIMESTAMPDIFF(SECOND, start_Time, NOW()) / 3600, 2) -- расчет продолжительности и округление до 2 знаков после запятой
+        WHERE
+            end_Time IS NULL;
+    """)
+    public boolean stopAll();
+
+    @Modifying
+    @Query("DELETE FROM time_entry WHERE start_Time < CURDATE() - INTERVAL :interval DAY;")
+    public int cleanUpOldData(int interval);
+
     @Query("SELECT * FROM time_entry WHERE user_Id = :userId AND task_Id = :taskId AND end_time is NULL")
     public TimeEntry findByUserIdAndTaskId(Long userId, Long taskId);
 
@@ -29,11 +44,11 @@ public interface TimeEntriesRepository extends CrudRepository <TimeEntry, Long> 
     @Modifying
     @Query("INSERT INTO time_entry (user_Id, task_Id, start_Time)\n" +
             "VALUES (:userId, :taskId, :startTime);")
-    public void save(Long userId, Long taskId, Timestamp startTime);
+    public boolean save(Long userId, Long taskId, Timestamp startTime);
 
     @Modifying
     @Query("update time_entry set end_time = :endTime, duration = :duration where id = :id ")
-    public void update(Timestamp endTime, double duration, Long id);
+    public boolean update(Timestamp endTime, double duration, Long id);
 
     @Modifying
     @Query("DELETE FROM time_entry where user_Id = :user_Id")
@@ -65,4 +80,5 @@ public interface TimeEntriesRepository extends CrudRepository <TimeEntry, Long> 
         ORDER BY start_Time DESC;
     """)
     public List<WorkInterval> getUserWorkIntervalsForPeriod(Long id, Timestamp start_date, Timestamp end_date);
+
 }

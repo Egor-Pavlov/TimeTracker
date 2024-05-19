@@ -17,7 +17,7 @@ public interface TasksRepository extends CrudRepository <Task, Long>{
 
     @Modifying
     @Query("INSERT INTO task (theme, description) VALUES (:theme, :description);")
-    public void save(String theme, String description);
+    public boolean save(String theme, String description);
 
     @Query("SELECT COUNT(*) FROM task WHERE task_Id = :id;")
     public boolean existsById(Long id);
