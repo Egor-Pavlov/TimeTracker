@@ -19,8 +19,8 @@ public interface UsersRepository extends CrudRepository<User, Long> {
     @Query("SELECT COUNT(*) FROM user WHERE email = :email")
     public boolean existsByEmail(String email);
 
-    @Query("SELECT user_Id FROM user WHERE email = :email")
-    public Long findByEmail(String email);
+    @Query("SELECT count(*) FROM user WHERE email = :email AND user_Id != :id")
+    public Long findByEmail( long id, String email);
 
     @Modifying
     @Query("INSERT INTO user (username, email) VALUES (:name, :email);")
