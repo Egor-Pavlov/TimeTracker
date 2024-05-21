@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+/**
+ * Class for scheduled task "cleanup"
+ */
 @Component
 public class DataCleanUp {
     private final TimeTrackerService timeTrackerService;
@@ -15,10 +18,17 @@ public class DataCleanUp {
     @Value("${data.retention.period.days}")
     private int retentionPeriodDays;
 
+    /**
+     * Constructor for cleanup task
+     * @param timeTrackerService service to manage time tracking
+     */
     public DataCleanUp(TimeTrackerService timeTrackerService) {
         this.timeTrackerService = timeTrackerService;
     }
 
+    /**
+     * Scheduled task to cleanup traking entries older than N days
+     */
     @Scheduled(cron = "${scheduled.task.cron}")
     public void cleanUpOldData() {
         schedulerLogger.info("Starting cleanup task. Retention period: " + retentionPeriodDays + " days");

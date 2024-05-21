@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+/**
+ * This class represents a scheduler component that stops tracking for all unstopped tasks based on a scheduled cron expression.
+ */
 @Component
 public class StopTracking {
     private final TimeTrackerService timeTrackerService;
@@ -14,10 +17,18 @@ public class StopTracking {
     @Value("${scheduled.task.cron}")
     private String cronExpression;
 
+    /**
+     * Constructor for StopTracking class.
+     * @param timeTrackerService an instance of TimeTrackerService for tracking time
+     */
     public StopTracking(TimeTrackerService timeTrackerService) {
         this.timeTrackerService = timeTrackerService;
     }
 
+    /**
+     * Scheduled method to stop tracking for all unstopped tasks.
+     * Logs the start of the scheduled task and stops tracking for all unstopped tasks.
+     */
     @Scheduled(cron = "${scheduled.task.cron}")
     public void stopTracking() {
         schedulerLogger.info("Start scheduled task. Cron expression: " + cronExpression

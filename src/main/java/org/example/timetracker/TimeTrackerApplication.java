@@ -15,7 +15,4 @@ public class TimeTrackerApplication {
         logger.error("Start Time-Tracker service.");
         SpringApplication.run(TimeTrackerApplication.class, args);
     }
-
-
-
 }
