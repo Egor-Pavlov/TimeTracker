@@ -50,6 +50,13 @@ public class TimeEntry {
     }
 
     /**
+     * Sets the ID of the time entry.
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    /**
      * Returns the user ID associated with the time entry.
      * @return The user ID.
      */
@@ -108,7 +115,8 @@ public class TimeEntry {
     /**
      * Sets the end time for the time entry and calculates the duration.
      * @param endTime The end time to set.
-     */    public void setEndTime(Timestamp endTime) {
+     */
+    public void setEndTime(Timestamp endTime) {
         this.endTime = endTime;
         this.endTime.setNanos(0);
         this.duration =  (double)(this.endTime.getTime() - this.startTime.getTime())/ (1000 * 60 * 60);
