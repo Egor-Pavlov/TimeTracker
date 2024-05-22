@@ -40,7 +40,7 @@ public class TimeTrackerRestController {
 
 //Работа только с пользователями
 
-    /**
+    /**ф
      * Add new user.
      *
      * @param newUser the request containing user details (username, email)
