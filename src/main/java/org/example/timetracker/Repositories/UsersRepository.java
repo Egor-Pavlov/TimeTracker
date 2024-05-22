@@ -85,4 +85,8 @@ public interface UsersRepository extends CrudRepository<User, Long> {
     @Modifying
     @Query("DELETE from user WHERE user_Id = :id;")
     public void deleteById(Long id);
+
+    @Modifying
+    @Query("DELETE from user WHERE email = :email;")
+    public void deleteByEmail(String email);
 }
