@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  time-tracker:
+    image: time-tracker-1.0
+    container_name: tracker
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_JDBCURL=jdbc:mysql://100.110.2.118:3306/time_tracker?useLegacyDatetimeCode=false&serverTimezone-UTC
+      - SPRING_DATASOURCE_USERNAME=javauser
+      - SPRING_DATASOURCE_PASSWORD=javapassword
+    volumes:
+      - /var/log/time-tracker:/var/log/time-tracker
+    restart: always
