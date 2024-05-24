@@ -3,7 +3,7 @@
     <Properties>
         <Property name="maxSize" value="1MB"/>
         <Property name="maxCount" value="7"/>
-        <Property name="logDir" value="C:\Users\Егор\source\repos\JAVA\TimeTracker\logs"/>
+        <Property name="logDir" value="/var/log/time-tracker/"/>
         <Property name="defaultPattern" value="%d{ISO8601} [%t] %-5p %logger{1} %C{1}.%M(line:%L). %m%n"/>
         <Property name="filenamePrefix" value="time-tracker"/>
     </Properties>

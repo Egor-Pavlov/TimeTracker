@@ -1,3 +1,8 @@
+# Сборка
+1. docker build -t time-tracker-1.0 .
+2. sudo docker run -p 8080:8080 time-tracker-1.0
+
+https://habr.com/ru/articles/448094/
 # 1 Техническое задание
 Разработать backend сервиса Многопользовательский тайм-трекер, доступ к которому можно
 получить по REST.

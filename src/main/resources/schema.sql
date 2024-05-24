@@ -1,9 +1,5 @@
 -- Таблица пользователей
-CREATE TABLE IF NOT EXISTS user (
-                                    user_Id INT AUTO_INCREMENT PRIMARY KEY,
-                                    username VARCHAR(255) NOT NULL,
-                                    email VARCHAR(255) NOT NULL UNIQUE
-);
+CREATE TABLE IF NOT EXISTS user (user_Id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL UNIQUE);
 
 -- Таблица задач
 CREATE TABLE IF NOT EXISTS task (

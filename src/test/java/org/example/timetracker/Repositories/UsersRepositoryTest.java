@@ -13,12 +13,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 class UsersRepositoryTest {
+
     @Autowired
-    private static UsersRepository usersRepository;
+    private UsersRepository usersRepository;
 
     /**
      * Создание пользователя для тестов и дальнейшего удаления
-     * @return
+     * @return user возвращает созданного пользователя
      */
     public static User createTestUser() {
         // Создание нового пользователя
@@ -28,33 +29,18 @@ class UsersRepositoryTest {
         return user;
     }
 
-    /**
-     * Подготовка - создать тестового пользователя и добавить в базу
-     * @throws Exception
-     */
-    @BeforeAll
-    public static void setUpBeforeClass() throws Exception {
-        User user = createTestUser();
-        // Сохранение пользователя в базе данных
-        usersRepository.save(user.getUserName(), user.getUserEmailAddress());
-    }
-
-    /**
-     * Удалить созданного пользователя из БД
-     * @throws Exception
-     */
-    @AfterAll
-    public static void tearDownAfterClass() throws Exception {
-        User user = createTestUser();
-        usersRepository.deleteByEmail(user.getUserEmailAddress());
-    }
 
     /**
      * Проверка поиска записи в БД
      */
     @Test
     public void testExistsByEmail() {
+        User user = createTestUser();
+        // Сохранение пользователя в базе данных
+        usersRepository.save(user.getUserName(), user.getUserEmailAddress());
         // Проверка, существует ли пользователь с данным email
         assertTrue(usersRepository.existsByEmail("test@example.com"));
+
+        usersRepository.deleteByEmail(user.getUserEmailAddress());
     }
 }
