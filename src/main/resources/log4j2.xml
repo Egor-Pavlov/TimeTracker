@@ -38,7 +38,7 @@
         <Root level="info">
         </Root>
 
-        <Logger name="org.springframework" level="INFO">
+        <Logger name="org.springframework" level="DEBUG">
             <AppenderRef ref="SPRING-INFO"/>
         </Logger>
         <Logger name="RestController" level="DEBUG">
