@@ -1,0 +1,9 @@
+org.example.timetracker
+org.example.timetracker.Controller
+org.example.timetracker.DTO
+org.example.timetracker.integrationalTests
+org.example.timetracker.Logging
+org.example.timetracker.Models
+org.example.timetracker.Repositories
+org.example.timetracker.Scheduler
+org.example.timetracker.Service
