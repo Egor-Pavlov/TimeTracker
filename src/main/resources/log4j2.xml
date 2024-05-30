@@ -34,11 +34,13 @@
             <DefaultRolloverStrategy max="${maxCount}"/>
         </RollingFile>
     </Appenders>
+
     <Loggers>
         <Root level="info">
+            <AppenderRef ref="SERVICE"/>
         </Root>
 
-        <Logger name="org.springframework" level="DEBUG">
+        <Logger name="org.springframework" level="INFO">
             <AppenderRef ref="SPRING-INFO"/>
         </Logger>
         <Logger name="RestController" level="DEBUG">

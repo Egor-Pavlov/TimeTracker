@@ -1,6 +1,6 @@
 # back
 # устанавливаем самую лёгкую версию JVM
-FROM openjdk:17-jdk-alpine
+FROM huecker.io/library/openjdk:17-jdk-alpine
 
 # указываем ярлык. Например, разработчика образа и проч. Необязательный пункт.
 LABEL maintainer="egor-pavlov"
