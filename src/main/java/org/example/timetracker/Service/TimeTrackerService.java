@@ -163,7 +163,7 @@ public class TimeTrackerService {
      * @throws ParseException if the date strings are not in the correct format
      */
     public double getTotalDurationForPeriod(long userID, String startTime, String endTime) throws ParseException {
-        return timeEntriesRepository.getTotalDurationForPeriod(userID, convertDate(startTime), convertDate(endTime));
+        return  timeEntriesRepository.getTotalDurationForPeriod(userID, convertDate(startTime), convertDate(endTime));
     }
 
     //Получить трудозатраты пользователя по задачам за период

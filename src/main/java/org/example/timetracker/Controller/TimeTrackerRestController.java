@@ -166,11 +166,13 @@ public class TimeTrackerRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("User with id \"" + userId.getUserId() + "\" not found");
         }
+        int count = 0;
         if (timeTrackerService.countByUserId(userId.getUserId()) != 0) {
-            timeTrackerService.deleteByUserId(userId.getUserId());
+            count = timeTrackerService.deleteByUserId(userId.getUserId()) + 1;
         }
         userRepository.deleteById(userId.getUserId());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("Deleted " + count + " rows");
     }
     /**
      * Retrieves the total work duration for a specific user over a specified period.

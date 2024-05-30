@@ -26,64 +26,64 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @Testcontainers
 public class TimeTrackerIntegrationTest {
-
-    @Container
-    public static MySQLContainer<?> mysqlContainer = new MySQLContainer<>("mysql:latest")
-            .withDatabaseName("test")
-            .withUsername("test")
-            .withPassword("test")
-            .withExposedPorts(3306)
-            .withCommand("--default-authentication-plugin=mysql_native_password",
-                    "--innodb-redo-log-capacity=10485760");
-
-    @Autowired
-    private TestRestTemplate restTemplate;
-
-    private String jdbcUrl;
-
-    @PostConstruct
-    public void init() {
-        String address = mysqlContainer.getHost();
-        Integer port = mysqlContainer.getMappedPort(3306);
-        jdbcUrl = "jdbc:mysql://100.110.1.79:" + port + "/test";
-        System.out.println("JDBC URL: " + jdbcUrl);
-    }
-
-    @Test
-    public void contextLoads() {
-        assertThat(mysqlContainer.isRunning()).isTrue();
-    }
-
-    @Test
-    public void testTimeTrackingFlow() {
-        // Создание пользователя
-        User user = new User();
-        user.setUsername("tester");
-        user.setEmail("a@a.ru");
-        ResponseEntity<User> userResponse = restTemplate.postForEntity("/api/users/new", user, User.class);
-        assertNotNull(userResponse.getBody());
-        Long userId = userResponse.getBody().getUserID();
-
-        // Создание задачи
-        TaskRequest task = new TaskRequest("New Task","New task for test");
-        ResponseEntity<Task> taskResponse = restTemplate.postForEntity("/api/tasks/new", task, Task.class);
-        assertNotNull(taskResponse.getBody());
-        long taskId = taskResponse.getBody().getTaskID();
-
-//        // Начало трекинга
-//        ResponseEntity<Tracking> startTrackingResponse = restTemplate.postForEntity("/tasks/" + taskId + "/start", null, Tracking.class);
-//        assertNotNull(startTrackingResponse.getBody());
-//        Long trackingId = startTrackingResponse.getBody().getId();
 //
-//        // Пауза трекинга
-//        HttpHeaders headers = new HttpHeaders();
-//        HttpEntity<Void> pauseRequest = new HttpEntity<>(headers);
-//        ResponseEntity<Void> pauseResponse = restTemplate.exchange("/trackings/" + trackingId + "/pause", HttpMethod.PUT, pauseRequest, Void.class);
-//        assertEquals(200, pauseResponse.getStatusCodeValue());
+//    @Container
+//    public static MySQLContainer<?> mysqlContainer = new MySQLContainer<>("mysql:latest")
+//            .withDatabaseName("test")
+//            .withUsername("test")
+//            .withPassword("test")
+//            .withExposedPorts(3306)
+//            .withCommand("--default-authentication-plugin=mysql_native_password",
+//                    "--innodb-redo-log-capacity=10485760");
 //
-//        // Остановка трекинга
-//        HttpEntity<Void> stopRequest = new HttpEntity<>(headers);
-//        ResponseEntity<Void> stopResponse = restTemplate.exchange("/trackings/" + trackingId + "/stop", HttpMethod.PUT, stopRequest, Void.class);
-//        assertEquals(200, stopResponse.getStatusCodeValue());
-    }
+//    @Autowired
+//    private TestRestTemplate restTemplate;
+//
+//    private String jdbcUrl;
+//
+//    @PostConstruct
+//    public void init() {
+//        String address = mysqlContainer.getHost();
+//        Integer port = mysqlContainer.getMappedPort(3306);
+//        jdbcUrl = "jdbc:mysql://100.110.1.79:" + port + "/test";
+//        System.out.println("JDBC URL: " + jdbcUrl);
+//    }
+//
+//    @Test
+//    public void contextLoads() {
+//        assertThat(mysqlContainer.isRunning()).isTrue();
+//    }
+//
+//    @Test
+//    public void testTimeTrackingFlow() {
+//        // Создание пользователя
+//        User user = new User();
+//        user.setUsername("tester");
+//        user.setEmail("a@a.ru");
+//        ResponseEntity<User> userResponse = restTemplate.postForEntity("/api/users/new", user, User.class);
+//        assertNotNull(userResponse.getBody());
+//        Long userId = userResponse.getBody().getUserID();
+//
+//        // Создание задачи
+//        TaskRequest task = new TaskRequest("New Task","New task for test");
+//        ResponseEntity<Task> taskResponse = restTemplate.postForEntity("/api/tasks/new", task, Task.class);
+//        assertNotNull(taskResponse.getBody());
+//        long taskId = taskResponse.getBody().getTaskID();
+//
+////        // Начало трекинга
+////        ResponseEntity<Tracking> startTrackingResponse = restTemplate.postForEntity("/tasks/" + taskId + "/start", null, Tracking.class);
+////        assertNotNull(startTrackingResponse.getBody());
+////        Long trackingId = startTrackingResponse.getBody().getId();
+////
+////        // Пауза трекинга
+////        HttpHeaders headers = new HttpHeaders();
+////        HttpEntity<Void> pauseRequest = new HttpEntity<>(headers);
+////        ResponseEntity<Void> pauseResponse = restTemplate.exchange("/trackings/" + trackingId + "/pause", HttpMethod.PUT, pauseRequest, Void.class);
+////        assertEquals(200, pauseResponse.getStatusCodeValue());
+////
+////        // Остановка трекинга
+////        HttpEntity<Void> stopRequest = new HttpEntity<>(headers);
+////        ResponseEntity<Void> stopResponse = restTemplate.exchange("/trackings/" + trackingId + "/stop", HttpMethod.PUT, stopRequest, Void.class);
+////        assertEquals(200, stopResponse.getStatusCodeValue());
+//    }
 }

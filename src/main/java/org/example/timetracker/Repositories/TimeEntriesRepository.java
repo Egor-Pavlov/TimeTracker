@@ -123,13 +123,14 @@ public interface TimeEntriesRepository extends CrudRepository <TimeEntry, Long> 
      * @return the total duration for the user in the specified period
      */
     @Query("""
-            SELECT SUM(duration) AS total_duration
-            FROM time_entry
-            WHERE user_Id = :id
-            AND start_time >= :start_date
-            AND end_time <= :end_date
-            """)
+        SELECT COALESCE(SUM(duration), 0) AS total_duration
+        FROM time_entry
+        WHERE user_Id = :id
+        AND start_time >= :start_date
+        AND end_time <= :end_date
+        """)
     public double getTotalDurationForPeriod(Long id, Timestamp start_date, Timestamp end_date);
+
 
     /**
      * Method to get a list of TaskDuration objects for a user in a specified period
