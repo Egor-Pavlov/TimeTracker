@@ -13,6 +13,50 @@ Backend сервиса Многопользовательский тайм-тр�
 
 https://habr.com/ru/articles/448094/
 
+## Запуск
+
+### Пример конфигурации по умолчанию:
+```
+spring.application.name=TimeTracker
+spring.datasource.url=jdbc:mysql://localhost:3306/time_tracker?useLegacyDatetimeCode=false&serverTimezone-UTC
+spring.datasource.username=javauser
+spring.datasource.password=javapassword
+spring.sql.init.mode=always
+
+scheduled.task.cron=59 59 23 * * *
+
+data.retention.period.days=2
+```
+### Описание параметров:  
+
+* `spring.datasource.url` - Адрес подключения к БД. БД должна существовать
+* `spring.datasource.url` - Пользователь mysql. Должен существовать
+* `spring.datasource.password` - Пароль от УЗ mysql
+* `scheduled.task.cron` - Время суток, в которое автоматически завершается трекинг
+* `data.retention.period.days` - период очистки старых данных трекинга (в днях)
+
+### Запуск докер-контейнера:
+Для запуска нужно создать файл docker-compose.yml и указать параметры, которые нужно переопределить в блоке environment и смонтировать директорию для логов   
+```
+version: "3.8"
+services:
+  time-tracker:
+    image: time-tracker-1.0
+    container_name: time-tracker
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_JDBCURL=jdbc:mysql://100.110.2.118:3306/time_tracker?useLegacyDatetimeCode=false&serverTimezone-UTC
+      - SPRING_DATASOURCE_USERNAME=javauser
+      - SPRING_DATASOURCE_PASSWORD=javapassword
+      - SCHEDULED_TASK_CRON=59 59 23 * * *
+      - DATA_RETENTION_PERIOD_DAYS=1
+    volumes:
+      - /var/log/time-tracker:/var/log/time-tracker
+    restart: always
+```
+После нужно выполнить команду   
+`docker compose up -d`
 
 ## 1.1 Типы запросов
 * создать пользователя трекинга
