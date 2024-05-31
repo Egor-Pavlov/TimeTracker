@@ -64,7 +64,9 @@ services:
     restart: always
 ```
 После нужно выполнить команду   
-`docker compose up -d`
+```bash
+docker compose up -d
+```
 
 <a name="api"><h2>Доступные API запросы</h2></a>
 ### Cоздать пользователя трекинга
@@ -74,7 +76,9 @@ services:
 * Email (не должен использоваться у других пользователей)  
 
 Запрос:  
-`curl -i -w -X POST http://localhost:8080/api/users/new -H "content-type:application/json" -d '{"username":"tester", "email":"a@a.ru"}'`  
+```bash
+curl -i -w -X POST http://localhost:8080/api/users/new -H "content-type:application/json" -d '{"username":"tester", "email":"a@a.ru"}'
+```  
 Ответ:   
 `Код 200`
 
@@ -108,7 +112,9 @@ services:
 * Новый email (не должен использоваться у других пользователей)  
 
 Запрос  
-`curl -i -w -X POST http://localhost:8080/api/user/update -H "content-type:application/json" -d '{"userID":1, "username":"tester123", "email":"a123@a.ru"}'`  
+```bash
+curl -i -w -X POST http://localhost:8080/api/user/update -H "content-type:application/json" -d '{"userID":1, "username":"tester123", "email":"a123@a.ru"}'
+```  
 Ответ:   
 `Код 200`
 ### Добавить задачу
@@ -117,13 +123,17 @@ services:
 * Описание задачи.  
 
 Запрос:  
-`curl -i -w -X POST http://localhost:8080/api/tasks/new -H "content-type:application/json" -d '{"theme":"bug", "description":"bherjhjksmvsv1234"}'`  
+```bash
+curl -i -w -X POST http://localhost:8080/api/tasks/new -H "content-type:application/json" -d '{"theme":"bug", "description":"bherjhjksmvsv1234"}'
+```  
 Ответ:   
 `Код 200`
 
 ### Получить список задач
 Запрос  
-`curl -v -X GET "http://localhost:8080/api/tasks/list"`  
+```bash
+curl -v -X GET "http://localhost:8080/api/tasks/list"
+```  
 Ответ:
 ```json
 [
@@ -147,7 +157,9 @@ services:
 * id задачи.  
 
 Запрос:   
-`curl -v -X POST http://localhost:8080/api/user/tracking/start -H "content-type:application/json" -d '{"userId":1, "taskId":1}'`  
+```bash
+curl -v -X POST http://localhost:8080/api/user/tracking/start -H "content-type:application/json" -d '{"userId":1, "taskId":1}'
+```  
 Ответ:   
 `Код 200`
 ### Прекратить отсчет времени по задаче Х
@@ -156,12 +168,16 @@ services:
 * id задачи.  
 
 Запрос:   
-`curl -v -X POST http://localhost:8080/api/user/tracking/stop -H "content-type:application/json" -d '{"userId":1, "taskId":1}'`  
+```bash
+curl -v -X POST http://localhost:8080/api/user/tracking/stop -H "content-type:application/json" -d '{"userId":1, "taskId":1}'
+```  
 Ответ:   
 `Код 200`  
 ### Получить весь трекинг времени всех пользователей
 Запрос:   
-`curl -v -X GET "http://localhost:8080/api/tracking/list"`  
+```bash
+curl -v -X GET "http://localhost:8080/api/tracking/list"
+```  
 Ответ:  
 ```json
 [
@@ -207,7 +223,9 @@ services:
 * Окончание периода.  
 
 Запрос:   
-`curl -X GET "http://localhost:8080/api/user/tracking/durations/period?userID=1&startTime=2024-05-13T00:00:00&endTime=2024-05-17T23:59:59"`  
+```bash
+curl -X GET "http://localhost:8080/api/user/tracking/durations/period?userID=1&startTime=2024-05-13T00:00:00&endTime=2024-05-17T23:59:59"
+```  
 Ответ
 ```json
   [  
@@ -225,7 +243,9 @@ services:
 * Окончание периода.  
 
 Запрос:   
-`curl -X GET "http://localhost:8080/api/user/tracking/intervals/period?userID=2&startTime=2024-05-31T00:00:00&endTime=2024-05-31T23:59:59"`  
+```bash
+curl -X GET "http://localhost:8080/api/user/tracking/intervals/period?userID=2&startTime=2024-05-31T00:00:00&endTime=2024-05-31T23:59:59"
+```  
 Ответ:
 ```json
   [  
@@ -262,7 +282,9 @@ services:
 * id пользователя.  
 
 Запрос:   
-`curl -v -X DELETE http://localhost:8080/api/user/delete -H "content-type:application/json" -d '{"userId":1}'`  
+```bash
+curl -v -X DELETE http://localhost:8080/api/user/delete -H "content-type:application/json" -d '{"userId":1}'
+```  
 Ответ:
 ```
 Deleted 1 rows
@@ -272,7 +294,9 @@ Deleted 1 rows
 * id пользователя.  
 
 Запрос:   
-`curl -v -X DELETE http://localhost:8080/api/user/tracking/delete -H "content-type:application/json" -d '{"userId":1}'`  
+```bash
+curl -v -X DELETE http://localhost:8080/api/user/tracking/delete -H "content-type:application/json" -d '{"userId":1}'
+```  
 Ответ:
 ```
 Deleted 2 rows
