@@ -86,7 +86,9 @@ curl -i -w -X POST http://localhost:8080/api/users/new -H "content-type:applicat
 
 ### Получить список пользователей трекинга  
 Запрос:  
-  `curl -v -X GET "http://localhost:8080/api/users/list"`  
+```bash
+curl -v -X GET "http://localhost:8080/api/users/list"
+```  
 Ответ:
 ```json
 [
