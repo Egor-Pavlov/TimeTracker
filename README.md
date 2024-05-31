@@ -276,7 +276,9 @@ curl -X GET "http://localhost:8080/api/user/tracking/intervals/period?userID=2&s
 * Окончание периода.  
 
 Запрос:  
-`curl -X GET "http://localhost:8080/api/user/tracking/sum/period?userID=2&startTime=2024-05-31T00:00:00&endTime=2024-05-31T23:59:59"`  
+```bash
+curl -X GET "http://localhost:8080/api/user/tracking/sum/period?userID=2&startTime=2024-05-31T00:00:00&endTime=2024-05-31T23:59:59"
+```  
 Ответ:
 ```
 3
