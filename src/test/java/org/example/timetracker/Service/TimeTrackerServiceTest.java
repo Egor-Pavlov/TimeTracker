@@ -35,11 +35,11 @@ public class TimeTrackerServiceTest {
     @InjectMocks
     private TimeTrackerService timeTrackerService;
 
-    @BeforeEach
-    void setUp() {
-        // Mockito will initialize mocks and inject them into the service
-    }
-
+    /**
+     * convertDate
+     * Тест проверяет корректность конвертации данных при правильном формате
+     * @throws Exception
+     */
     @Test
     void testConvertDate_ValidDate() throws Exception {
         // Устанавливаем входные данные
@@ -52,6 +52,10 @@ public class TimeTrackerServiceTest {
         assertEquals(expectedTimestamp, actualTimestamp);
     }
 
+    /**
+     * convertDate
+     * Проверка, что при передаче недопустимой даты генерируется исключение ParseException
+     */
     @Test
     void testConvertDate_InvalidDate() {
         // Устанавливаем недопустимую дату
@@ -62,6 +66,9 @@ public class TimeTrackerServiceTest {
         });
     }
 
+    /**
+     * Создается 2 записи трекинга и проверяется что метод findAll вызвал правильный метод репозитория 1 раз
+     */
     @Test
     void testFindAll() {
         // Создаем два объекта TimeEntry
@@ -78,6 +85,9 @@ public class TimeTrackerServiceTest {
         verify(timeEntriesRepository, times(1)).findAll();
     }
 
+    /**
+     * Проверка корректности работы метода countByUserId
+     */
     @Test
     void testCountByUserId() {
         // Устанавливаем идентификатор пользователя
@@ -92,6 +102,10 @@ public class TimeTrackerServiceTest {
         verify(timeEntriesRepository, times(1)).countByUserId(userId);
     }
 
+    /**
+     * deleteByUserId
+     * Проверка передаваемых параметров и количества вызовов метода репозитория
+     */
     @Test
     void testDeleteByUserId() {
         // Установка значений для теста
@@ -107,6 +121,10 @@ public class TimeTrackerServiceTest {
         verify(timeEntriesRepository, times(1)).deleteByUserId(userId);
     }
 
+    /**
+     * startTracking
+     * Проверка, что при начале трекинга выполняются все проверки на существование записей в таблицах и что параметры не искажаются
+     */
     @Test
     void testStartTracking() {
         //Параметры
@@ -127,6 +145,10 @@ public class TimeTrackerServiceTest {
         verify(timeEntriesRepository, times(1)).save(any(Long.class), any(Long.class), any(Timestamp.class));
     }
 
+    /**
+     * stopTracking
+     * Проверка, что при окончании трекинга выполняются все проверки на существование записей в таблицах и что параметры не искажаются
+     */
     @Test
     void testStopTracking() {
         //Параметры

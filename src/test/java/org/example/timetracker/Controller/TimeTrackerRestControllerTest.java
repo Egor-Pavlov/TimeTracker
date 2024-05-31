@@ -26,12 +26,12 @@ class TimeTrackerRestControllerTest {
     @MockBean
     private UsersRepository userRepository;
 
-    @MockBean
-    private TasksRepository tasksRepository;
 
-    @MockBean
-    private TimeTrackerService timeTrackerService;
-
+    /**
+     * Проверка работы обработчика запроса на создание пользователя /api/users/new/
+     * Пользователь создается и добавляется в БД, после проверяется что метод сохранения в БД был вызван с корректными параметрами
+     * @throws Exception
+     */
     @Test
     public void testAddUser() throws Exception {
         //объект, который отправится в запросе
