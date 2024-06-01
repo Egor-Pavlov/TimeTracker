@@ -40,6 +40,14 @@ public interface TasksRepository extends CrudRepository<Task, Long> {
     public boolean save(String theme, String description);
 
     /**
+     * Returns Id of task by theme and description
+     * @param theme task Theme
+
+     * @return id
+     */
+    @Query("SELECT task_Id FROM task where theme = :theme")
+    public Long getTaskId(String theme);
+    /**
      * Checks if a task with the specified ID exists in the database.
      *
      * @param id The ID of the task to check.

@@ -45,6 +45,9 @@ public interface UsersRepository extends CrudRepository<User, Long> {
     @Query("SELECT count(*) FROM user WHERE email = :email AND user_Id != :id")
     public Long findByEmail(long id, String email);
 
+    @Query("SELECT user_Id FROM user WHERE email = :email")
+    public Long getIdByEmail(String email);
+
     /**
      * Saves a new user to the database with the specified name and email.
      *

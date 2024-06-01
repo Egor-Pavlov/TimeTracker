@@ -3,10 +3,10 @@ CREATE TABLE IF NOT EXISTS user (user_Id INT AUTO_INCREMENT PRIMARY KEY, usernam
 
 -- Таблица задач
 CREATE TABLE IF NOT EXISTS task (
-                                    task_Id INT AUTO_INCREMENT PRIMARY KEY,
-                                    theme TEXT NOT NULL,
+                                    task_id INT AUTO_INCREMENT PRIMARY KEY,
+                                    theme VARCHAR(255) NOT NULL UNIQUE,
                                     description TEXT NOT NULL,
-                                    creation_Date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+                                    creation_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Таблица записей времени

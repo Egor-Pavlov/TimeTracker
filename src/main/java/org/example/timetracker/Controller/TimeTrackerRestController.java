@@ -41,18 +41,18 @@ public class TimeTrackerRestController {
 //Работа только с пользователями
 
     /**
-     * Add new user.
+     * Add new user. Returns id of new user
      *
      * @param newUser the request containing user details (username, email)
-     * @return the response entity with status and message
+     * @return the response entity with status and message and new user id
      */
     @PostMapping("/api/users/new")
-    public ResponseEntity<String> addUser(@RequestBody UserRequest newUser) {
+    public ResponseEntity<?> addUser(@RequestBody UserRequest newUser) {
         if (userRepository.existsByEmail(newUser.getEmail())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email is used!"); // Код 200 OK
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email is used!");
         }
         userRepository.save(newUser.getUsername(), newUser.getEmail());
-        return ResponseEntity.ok().build(); // Код 200 OK
+        return ResponseEntity.ok().body(userRepository.getIdByEmail(newUser.getEmail())); // Код 200 OK
     }
     /**
      * Updates an existing user's information.
@@ -84,13 +84,13 @@ public class TimeTrackerRestController {
      * Adds a new task.
      *
      * @param taskRequest the request containing task details
-     * @return the response entity with status
+     * @return the response entity with status and id of new task
      */
     @PostMapping("/api/tasks/new")
-    public ResponseEntity<Void> addTask(@RequestBody TaskRequest taskRequest){
+    public ResponseEntity<Long> addTask(@RequestBody TaskRequest taskRequest){
+        System.out.println(taskRequest.getTaskTheme());
         tasksRepository.save(taskRequest.getTaskTheme(), taskRequest.getTaskDescription());
-        return ResponseEntity.ok().build();
-
+        return ResponseEntity.ok().body(tasksRepository.getTaskId(taskRequest.getTaskTheme()));
     }
     /**
      * Retrieves a list of all tasks.
@@ -193,7 +193,7 @@ public class TimeTrackerRestController {
                     .body("User with id \"" + userID + "\" not found");
         }
         try{
-            double totalDuration = timeTrackerService.getTotalDurationForPeriod(userID, startTime, endTime);
+            Double totalDuration = timeTrackerService.getTotalDurationForPeriod(userID, startTime, endTime);
             return ResponseEntity.ok().body(totalDuration);
         }
         catch (ParseException e){

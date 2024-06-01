@@ -72,6 +72,7 @@ docker compose up -d
 
 <a name="api"><h2>Доступные API запросы</h2></a>
 ### Cоздать пользователя трекинга
+Возвращает id созданного пользователя
 Параметры:
 * id пользователя;
 * Имя пользователя;
@@ -79,10 +80,18 @@ docker compose up -d
 
 Запрос:  
 ```bash
-curl -i -w -X POST http://localhost:8080/api/users/new -H "content-type:application/json" -d '{"username":"tester", "email":"a@a.ru"}'
+curl -v -X POST http://localhost:8080/api/users/new -H "content-type:application/json" -d '{"username":"tester", "email":"a@a.ru"}'
 ```  
 Ответ:   
-`Код 200`
+```
+< HTTP/1.1 200
+< Content-Type: application/json
+< Transfer-Encoding: chunked
+< Date: Sat, 01 Jun 2024 08:43:30 GMT
+<
+* Connection #0 to host localhost left intact
+  1 
+```
 
 ### Получить список пользователей трекинга  
 Запрос:  
@@ -122,16 +131,25 @@ curl -i -w -X POST http://localhost:8080/api/user/update -H "content-type:applic
 Ответ:   
 `Код 200`
 ### Добавить задачу
+Создает задачу и возвращает статус ответа и id задачи
 Параметры:
 * Тема задачи;
 * Описание задачи.  
 
 Запрос:  
 ```bash
-curl -i -w -X POST http://localhost:8080/api/tasks/new -H "content-type:application/json" -d '{"theme":"bug", "description":"bherjhjksmvsv1234"}'
+curl -v -X POST http://localhost:8080/api/tasks/new -H "content-type:application/json" -d '{"theme":"bug", "description":"bherjhjksmvsv1234"}'
 ```  
 Ответ:   
-`Код 200`
+```
+< HTTP/1.1 200
+< Content-Type: application/json
+< Transfer-Encoding: chunked
+< Date: Sat, 01 Jun 2024 08:43:30 GMT
+<
+* Connection #0 to host localhost left intact
+  1 
+```
 
 ### Получить список задач
 Запрос  
@@ -346,3 +364,15 @@ Deleted 2 rows
 Реализовал тест API в рамках изучения  
 `src/test/java/org/example/timetracker/Controller/TimeTrackerRestControllerTest.java`
 * `testAddUser` - проверка обработчика запроса `/api/users/new`. Создается новый пользователь, проверятся что метод сохранения в базу вызван с нужными параметрами 
+
+### Интеграционный тест
+Реализован интеграционный тест услуги трекинга времени. 
+Проверяется работоспособность функционала трекинга: начало трекинга, окончание и подсчет трудозатрат.
+Шаги теста:
+1. Создается пользователь и задача, начинается отсчет времени (с помощью API запроса).
+2. Выполняется ожидание 30 секунд
+3. Отсчет времени по задаче завершается (API запрос)
+4. Запрашивается сумма трудозатрат пользователя за период настоящее время +- 5 минут. Тоже с помощью запроса 
+5. трудозатраты должны быть равны 0,01, так как работа велась 30 секунд
+
+Перед и после теста база очищается. Для запуска такого теста нужно работающее приложение. 

@@ -1,89 +1,129 @@
 package org.example.timetracker.integrationalTests;
 
-import jakarta.annotation.PostConstruct;
 import org.example.timetracker.DTO.TaskRequest;
-import org.example.timetracker.Models.Task;
-import org.example.timetracker.Models.User;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.example.timetracker.DTO.TimeEntryRequest;
+import org.example.timetracker.DTO.UserRequest;
+import org.example.timetracker.Repositories.TasksRepository;
+import org.example.timetracker.Repositories.TimeEntriesRepository;
+import org.example.timetracker.Repositories.UsersRepository;
+import org.junit.BeforeClass;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import org.example.timetracker.Models.Task;
+import org.example.timetracker.Models.User;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ExtendWith(SpringExtension.class)
-@Testcontainers
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@SpringBootTest
+@ActiveProfiles("test")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class TimeTrackerIntegrationTest {
-//
-//    @Container
-//    public static MySQLContainer<?> mysqlContainer = new MySQLContainer<>("mysql:latest")
-//            .withDatabaseName("test")
-//            .withUsername("test")
-//            .withPassword("test")
-//            .withExposedPorts(3306)
-//            .withCommand("--default-authentication-plugin=mysql_native_password",
-//                    "--innodb-redo-log-capacity=10485760");
-//
-//    @Autowired
-//    private TestRestTemplate restTemplate;
-//
-//    private String jdbcUrl;
-//
-//    @PostConstruct
-//    public void init() {
-//        String address = mysqlContainer.getHost();
-//        Integer port = mysqlContainer.getMappedPort(3306);
-//        jdbcUrl = "jdbc:mysql://100.110.1.79:" + port + "/test";
-//        System.out.println("JDBC URL: " + jdbcUrl);
-//    }
-//
-//    @Test
-//    public void contextLoads() {
-//        assertThat(mysqlContainer.isRunning()).isTrue();
-//    }
-//
-//    @Test
-//    public void testTimeTrackingFlow() {
+
+    @Autowired
+    private DataSource dataSource;
+
+    //@Autowired
+    private final TestRestTemplate restTemplate = new TestRestTemplate();
+
+    @Autowired
+    private UsersRepository usersRepository;
+
+    @Autowired
+    private TasksRepository tasksRepository;
+
+    @Autowired
+    private TimeEntriesRepository timeEntriesRepository;
+
+    private final String prefix= "http://127.0.0.1:8080";
+
+    @BeforeEach
+    public void setUp() throws SQLException {
+        timeEntriesRepository.deleteAll();
+        usersRepository.deleteAll();
+        tasksRepository.deleteAll();
+    }
+
+    @AfterEach
+    public void tearDown() throws SQLException {
+        timeEntriesRepository.deleteAll();
+        usersRepository.deleteAll();
+        tasksRepository.deleteAll();
+    }
+    @Test
+    void contextLoads() throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            assertThat(connection.isValid(1)).isTrue();
+        }
+    }
+
+    /**
+     * Тест услуги трекинга времени. Проверяется работоспособность функционала трекинга: начало трекинга, окончание и подсчет трудозатрат.
+     * Создается пользователь и задача, начинается отсчет времени (с помощью API запроса).
+     * Ожидание 30 секунд
+     * Отсчет времени по задаче завершается (API запрос)
+     * Запрашивается сумма трудозатрат пользователя за период настоящее время +- 5 минут
+     * трудозатраты должны быть равны 0,01, так как работа велась 30 секунд
+     * @throws InterruptedException
+     */
+    @Test
+    public void testTimeTrackingFlow() throws InterruptedException {
 //        // Создание пользователя
-//        User user = new User();
-//        user.setUsername("tester");
-//        user.setEmail("a@a.ru");
-//        ResponseEntity<User> userResponse = restTemplate.postForEntity("/api/users/new", user, User.class);
-//        assertNotNull(userResponse.getBody());
-//        Long userId = userResponse.getBody().getUserID();
-//
-//        // Создание задачи
-//        TaskRequest task = new TaskRequest("New Task","New task for test");
-//        ResponseEntity<Task> taskResponse = restTemplate.postForEntity("/api/tasks/new", task, Task.class);
-//        assertNotNull(taskResponse.getBody());
-//        long taskId = taskResponse.getBody().getTaskID();
-//
-////        // Начало трекинга
-////        ResponseEntity<Tracking> startTrackingResponse = restTemplate.postForEntity("/tasks/" + taskId + "/start", null, Tracking.class);
-////        assertNotNull(startTrackingResponse.getBody());
-////        Long trackingId = startTrackingResponse.getBody().getId();
-////
-////        // Пауза трекинга
-////        HttpHeaders headers = new HttpHeaders();
-////        HttpEntity<Void> pauseRequest = new HttpEntity<>(headers);
-////        ResponseEntity<Void> pauseResponse = restTemplate.exchange("/trackings/" + trackingId + "/pause", HttpMethod.PUT, pauseRequest, Void.class);
-////        assertEquals(200, pauseResponse.getStatusCodeValue());
-////
-////        // Остановка трекинга
-////        HttpEntity<Void> stopRequest = new HttpEntity<>(headers);
-////        ResponseEntity<Void> stopResponse = restTemplate.exchange("/trackings/" + trackingId + "/stop", HttpMethod.PUT, stopRequest, Void.class);
-////        assertEquals(200, stopResponse.getStatusCodeValue());
-//    }
+        usersRepository.save("tester", "a@a.ru");
+        Long userId = usersRepository.getIdByEmail("a@a.ru");
+                // Создание задачи
+        tasksRepository.save("New Task", "New task for test");
+        long taskId = tasksRepository.getTaskId("New Task");
+
+        // Начало трекинга
+        TimeEntryRequest startTracking = new TimeEntryRequest(userId, taskId);
+        restTemplate.postForEntity(prefix + "/api/user/tracking/start", startTracking, null);
+        Thread.sleep(30000);
+        restTemplate.postForEntity(prefix + "/api/user/tracking/stop", startTracking,null);
+
+        // Получение текущего времени
+        LocalDateTime now = LocalDateTime.now();
+
+        //Вычисление времени 5 минут до и 5 минут после текущего времени для получения трудозатрат
+        LocalDateTime startTime = now.minusMinutes(5);
+        LocalDateTime endTime = now.plusMinutes(5);
+
+        // Форматирование времени в строку в формате ISO_LOCAL_DATE_TIME
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        String startTimeStr = startTime.format(formatter);
+        String endTimeStr = endTime.format(formatter);
+        // Выполнение запроса с автоматически сгенерированными датами
+        String url = String.format(prefix + "/api/user/tracking/sum/period?userID=%d&startTime=%s&endTime=%s", userId, startTimeStr, endTimeStr);ResponseEntity<String> durationResponse = restTemplate.getForEntity(url, String.class);
+        String responseBody = durationResponse.getBody();
+        System.out.println("Response body: " + responseBody);
+
+        // Попытка десериализации в Double
+        Double duration = null;
+        if (responseBody != null) {
+            try {
+                duration = Double.parseDouble(responseBody);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+
+        assertNotNull(duration);
+        assertEquals(0.01, duration, 0.001);
+    }
 }
