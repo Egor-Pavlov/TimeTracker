@@ -351,6 +351,7 @@ Deleted 2 rows
 Тест добавляет запись о пользователе в БД и проверяет работу метода поиска по email
 
 ### Unit-тесты
+
 Так же реализовал несколько тестов методов сервиса, изучил работу с заглушками, проверку результата, проверку количества вызовов и передаваемых параметров   
 `src/test/java/org/example/timetracker/Service/TimeTrackerServiceTest.java`  
 * `testConvertDate_ValidDate` и `testConvertDate_ValidDate` проверяют метод конвертации данных в случае валидных и невалидных данных 

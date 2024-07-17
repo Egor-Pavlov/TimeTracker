@@ -23,6 +23,7 @@ public interface TasksRepository extends CrudRepository<Task, Long> {
     /**
      * Retrieves all tasks from the database.
      *
+     *
      * @return List of Task objects representing all tasks in the database.
      */
     @Query("SELECT * FROM task;")
